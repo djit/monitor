@@ -1,0 +1,38 @@
+{% from "macros/macros.html" import nav_link with context %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>ALP Content Services</title>
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    <meta name="description" content="">
+    <meta name="author" content="Djilali Tabbouche">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" />
+
+    <!--Import Google Icon Font-->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/skeleton.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/frontend/main.css') }}">
+
+    <!--JS -->
+    <script src="{{ url_for('static', filename='js/vendor/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/font-awesome.js') }}"></script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        {% block content %}{% endblock %}
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

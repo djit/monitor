@@ -1,0 +1,14 @@
+{% for contact in contacts %}
+<tr>
+    <td><input type="checkbox" name="row" id="{{ contact._id }}" class="check"/></td>
+    <td><a href="/admin/contacts/{{ contact._id }}">{{ contact.firstname ~ ' ' ~ contact.lastname }}</a></td>
+    <td>{{ contact.email }}</td>
+    <td>{{ contact.organization }}</td>
+    <td>{{ contact.articles|length }}</td>
+    <td>{{ contact.preferences.articles_notify if (contact.preferences and contact.preferences.articles_notify) }}</td>
+    <td>
+        <i onClick="window.location='/admin/contacts/{{ contact._id }}/edit'" class="fa fa-lg fa-pencil" aria-hidden="true" title="edit"></i>&nbsp;
+        <i id="{{ contact._id }}" class="fa fa-lg fa-trash delete" aria-hidden="true" title="delete"></i>
+    </td>
+</tr>
+{% endfor %}

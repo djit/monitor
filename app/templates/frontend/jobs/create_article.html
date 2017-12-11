@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ALP Content Services</title>
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/frontend/main.css') }}">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500' type='text/css'>
+
+    <!-- META -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ALP Content Services Hub: submit your translation request">
+    <meta name="keywords" content="">
+    <meta name="author" content="Djilali Tabbouche">
+
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
+    <!--[if lt IE 9]>
+    <script src="js/vendor/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/vendor/font-awesome.js') }}"></script>
+    <!--script src="http://localhost:35729/livereload.js" charset="utf-8"></script-->
+</head>
+
+<body>
+
+    <div id="wrapper" style="text-align: center">
+
+        <section id="header">
+
+            <div id="message"></div>
+
+            <div class="form-box shadow">
+
+                <div class="text-center">
+                    <a href="http://al-arabic.com" target="_blank"><img src="{{ url_for('static', filename='img/al-arabic-logo-200px.png') }}" alt="AL Arabic" style="width:200px"></a>
+                </div>
+
+                <form id="request" method="post" action=''>
+
+                    <div class="form-content">
+
+                        <div class="row">
+                          <div class="welcome">
+                            <h1>Hi {{ contact.firstname }}, Thank you for seeking our services.</h1>
+                            <p>
+                              Please verify and submit your request. You will receive an email with a proposal for your translation.
+                            </p>
+                            <p>
+                                For inquiry or special request, contact us at +971 4 363 7757 or by email at <a href="mailto:sales@al-arabic">sales@al-arabic.com</a>.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="row clearfix">
+
+                            <h2 class="heading pull-left">1. Contact details</h2>
+
+                            <input type="text" name="name" id="name" placeholder="Name *" autofocus="autofocus" value="{{ contact.firstname ~ ' ' ~ contact.lastname }}">
+                            <div id="name_error" class="error"></div>
+                            {% for error in form.name.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+
+                            <input type="text" name="email" id="email" placeholder="Email *" value="{{ contact.email }}">
+                            <div id="email_error" class="error"></div>
+                            <div id="email_invalid_error" class="error"></div>
+                            {% for error in form.email.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+
+                            <input type="text" name="phone" id="phone" placeholder="Phone *" value="{{ contact.phone }}">
+                            <div id="phone_error" class="error"></div>
+                            {% for error in form.phone.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+
+                            <input type="text" name="organization" id="organization" placeholder="Company" value="{{ contact.organization }}">
+                            <div id="organization_error" class="error"></div>
+                            {% for error in form.organization.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="row text clearfix">
+
+                            <h2 class="heading pull-left">2. Text to translate</h2>
+
+                            <br><br>
+                            <span class="pull-left text-left" style="width:100%">0.5 AED per word if Arabic &#10094;&#10095; English. 0.8 AED per word otherwise.</span>
+                            <br><br>
+
+                            <div class="select-container">
+                                <span class="pull-left" style="padding:5px 10px 5px;">Translate from: </span>
+                                <div class="styled-select pull-left">
+                                    <select name="translatefrom">
+                                        <option value="english" selected>English</option>
+                                        <option value="arabic">Arabic</option>
+                                        <option value="russian">Russian</option>
+                                        <option value="mandarin">Mandarin</option>
+                                        <option value="french">French</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="german">German</option>
+                                        <option value="persian">Persian</option>
+                                        <option value="urdu">Urdu</option>
+                                        <option value="hindi">Hindi</option>
+                                        <option value="tagalog">Tagalog</option>
+                                    </select>
+                                </div>
+                                <span class="to-select pull-left">&nbsp;to&nbsp;</span>
+                                <div class="styled-select pull-left">
+                                    <select name="translateto">
+                                      <option value="arabic" selected>Arabic</option>
+                                      <option value="english">English</option>
+                                      <option value="russian">Russian</option>
+                                      <option value="mandarin">Mandarin</option>
+                                      <option value="french">French</option>
+                                      <option value="spanish">Spanish</option>
+                                      <option value="german">German</option>
+                                      <option value="persian">Persian</option>
+                                      <option value="urdu">Urdu</option>
+                                      <option value="hindi">Hindi</option>
+                                      <option value="tagalog">Tagalog</option>
+                                    </select>
+                                </div>
+                                <span class="wordcount-container pull-right text-right">words count:&nbsp;<input name="wordcount" id="wordcount" class="wordcount"></span>
+                            </div>
+
+                            <textarea name="text" id="text" placeholder="Paste your text here *" rows=25>{{ article.body }}</textarea>
+                            <div id="text_error" class="error"></div>
+                            {% for error in form.text.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+
+                            <!--div class="checkbox">
+                              <input type="checkbox" id="accept">
+                              <label for="c1"><a href="http://al-arabic.com/AL-Arabic-MSA_web-copy.pdf" target="_blank">I agree to AL Arabic terms and conditions of our Master Services Agreement.</a></label>
+                            </div>
+                            <div id="accept_error" class="error"></div-->
+
+                            <button class="primary subbutton">Request a quote</button>
+
+                        </div>
+
+                    </div>
+                    <!-- /.form-content -->
+
+                </form>
+
+            </div>
+            <!-- /.form-box -->
+
+        </section>
+        <!--/#header -->
+
+        <section id="footer">
+          <div class="footer-wrapper">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-phone"></i>&nbsp;&nbsp;+971 4 363 7757</li>
+                        <li><i class="fa fa-envelope-o"></i>&nbsp;&nbsp;info@al-arabic.com</li>
+                        <li><i class="fa fa-map-marker"></i>&nbsp;&nbsp;&nbsp;Office 3306-2, Level 33
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BB1 Tower, Mazaya Business Avenue
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JLT
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P.O.Box 500010
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dubai, United Arab Emirates
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-right">
+                  FIND US ON SOCIAL NETWORKS
+                  <div class="social-icons">
+                    <a href="https://www.facebook.com/alarbic.dubai" target="_blank"><i class="fa fa-facebook "></i></a>
+                    <a href="http://twitter.com/ArabicAL"><i class="fa fa-twitter" target="_blank"></i></a>
+                    <a href="https://plus.google.com/+Alarabic-translation" target="_blank"><i class="fa fa-google-plus "></i></a>
+                    <a href="https://www.linkedin.com/pub/dr-ali-mohamad/49/610/b2a" target="_blank"><i class="fa fa-linkedin "></i></a>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+        </section>
+        <!--/#footer -->
+
+        <div class="legal">
+            <span class="sp-copyright"><a href="http://al-arabic.com" target="_blank">COPYRIGHT© 2016 ALP Content Services DMCC (AL Arabic). All Rights Reserved.</a></span>
+        </div>
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <script src="{{ url_for('static', filename='js/vendor/jquery-2.1.3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

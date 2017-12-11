@@ -1,0 +1,85 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+    <h1>
+        Sources: {{ sources.count() }}
+        <a class="button button-primary u-pull-right" href="/admin/sources/new">New source</a>
+    </h1>
+
+     {% if sources.count() %}
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Url</th>
+                <th>Active crawler</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for source in sources %}
+            <tr>
+                <td><a href="/admin/sources/{{ source._id }}">{{ source.name }}</a></td>
+                <td><a href="/admin/sources/{{ source._id }}">{{ source.url|urlize(target='_blank') }}</a></td>
+                <td>
+                  {% set sourcecrawler = crawler(source.crawler) if source.crawler %}
+                  {{ sourcecrawler.name ~ ' / ' ~ sourcecrawler.spider if sourcecrawler }}
+                </td>
+                <td>
+                    <i onClick="window.location='/admin/sources/{{ source._id }}/edit'" class="fa fa-pencil" aria-hidden="true" title="edit"></i>&nbsp;
+                    <i id="{{ source._id }}" class="fa fa-lg fa-trash delete" aria-hidden="true" title="delete"></i>&nbsp;
+                    <i id="{{ source._id }}" class="fa fa-lg fa-cog crawl" aria-hidden="true" title="crawl"></i>
+                </td>
+            </tr>
+            <tr id="result_tr_{{ source._id }}" style="display:none; background-color: #f2f2f2">
+              <td>&nbsp;</td>
+              <td colspan="3" id="result_td_{{ source._id }}"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        No source found: add your first one.
+    {% endif %}
+
+    <script type="text/javascript">
+        $(function() {
+            // delete source
+            $( ".delete" ).click(function() {
+                if (confirm('Delete this source?')){
+                    var id = $(this).attr('id');
+                    location.href = '/admin/sources/' + id + '/delete/';
+                }
+            })
+
+            // run crawler
+            $( ".crawl" ).click(function() {
+                if (confirm('Run this crawler?')){
+                    var id = $(this).attr('id');
+                    icon = $(this)
+                    //$.get('/sources/'+id+'/crawl', function(data) {
+                    //    console.log(data);
+                    //});
+                    $.ajax({
+                      url: '/admin/sources/'+id+'/crawl',
+                      type: 'get',
+                      beforeSend: function() {
+                        icon.css('color', '#CC0000');
+                        icon.addClass('fa-spin');
+                      },
+                      complete: function() {
+                        icon.css('color', '#000000');
+                        icon.removeClass('fa-spin');
+                      },
+                      success: function(data) {
+                        //$('#result_td_'+id).html('job executed: <a href="/jobs">click here</a>');
+                        $('#result_td_'+id).html(data);
+                        $('#result_tr_'+id).toggle();
+                        console.log(data);
+                      }
+                    });
+                }
+            });
+        })
+    </script>
+
+{% endblock %}

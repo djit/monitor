@@ -1,0 +1,65 @@
+{% from "macros/macros.html" import backend_nav_link with context %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Monitor | Admin</title>
+    <meta name="description" content="">
+    <meta name="author" content="Djilali Tabbouche">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" />
+
+    <!--Import Google Icon Font-->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/skeleton.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/backend/layout.css') }}">
+
+    <!--JS -->
+    <script src="{{ url_for('static', filename='js/vendor/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/font-awesome.js') }}"></script>
+    
+    <!--  live reload -->
+    <script src="http://localhost:35729/livereload.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <nav class="navbar">
+            <ul class="navbar-list">
+              {{ backend_nav_link('index', 'HOME') }}
+              {{ backend_nav_link('config', 'CONFIG') }}
+              {{ backend_nav_link('sources', 'SOURCES') }}
+              {{ backend_nav_link('articles', 'ARTICLES') }}
+              {{ backend_nav_link('contacts', 'CONTACTS') }}
+              {{ backend_nav_link('queues', 'QUEUES') }}
+              {{ backend_nav_link('jobs', 'JOBS') }}
+              {{ backend_nav_link('reports', 'REPORTS') }}
+              {{ backend_nav_link('logs', 'LOGS') }}
+              <li class="u-pull-right"><a href="/admin/accounts">ACCOUNTS</a></li>
+            </ul>
+        </nav>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }} </li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

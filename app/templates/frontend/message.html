@@ -1,0 +1,24 @@
+{% extends "frontend/layout.html" %}
+
+{% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="message-box-wrapper">
+        <div class="message-box">
+          <div class="message-title">{{ messages[0].title }}</div>
+          
+          <div class="message-text">
+            {{ messages[0].text|safe }}
+          </div>
+        
+          <!--div class="message-footer">
+            <button class="button" onclick="window.top.close()">Close</button>
+          </div-->
+
+        </div>
+      </div>
+
+    {% endif %}
+  {% endwith %}
+
+{% endblock %}

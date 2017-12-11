@@ -1,0 +1,73 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+    <h1>Jobs: {{ jobs.count() }}</h1>
+
+     {% if jobs.count() %}
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th><input type="checkbox" name="rows" id="check-all"/></th>
+                <th>Request date</th>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th><i class="fa fa-lg fa-trash delete-all" aria-hidden="true" title="delete all selected"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td><input type="checkbox" name="row" id="{{ job._id }}" class="check"/></td>
+                <td><a href="/admin/jobs/{{ job._id }}">{{ job.timestamp.strftime('%Y-%m-%d %-H:%M') }}</a></td>
+                <td><a href="/admin/jobs/{{ job._id }}">{{ job.name }}{{ ' | ' ~ job.organisation if job.organisation}}</a></td>
+                <td><b>{{ job.translatefrom ~ ' to ' ~ job.translateto ~ ': ' ~ job.wordcount }}</b></td>
+                <td>
+                  {% set color = 'success' if job.status == 'executed' else 'default' if job.accepted == 'archived' else 'info' %}
+                  <b class="label label-{{ color }}">{{ job.status }}</b>
+                </td>
+                <td>
+                    <i onClick="window.location='/admin/jobs/{{ job._id }}/edit'" class="fa fa-pencil" aria-hidden="true" title="edit"></i>&nbsp;
+                    <i id="{{ job._id }}" class="fa fa-lg fa-trash delete" aria-hidden="true" title="delete"></i>&nbsp;
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        No job found.
+    {% endif %}
+
+    <script type="text/javascript">
+        $(function() {
+            // delete job
+            $( ".delete" ).click(function() {
+                if (confirm('Delete this job?')){
+                    var id = $(this).attr('id');
+                    location.href = '/admin/jobs/' + id + '/delete/';
+                }
+            })
+
+            // delete all selected rows
+            $( ".delete-all" ).click(function() {
+              if (confirm('Delete all selected articles?')){
+                var list = '';
+                $('.check').each(function() {
+                  if ($(this).prop("checked") == true) {
+                    list += $(this).attr('id') + '$'
+                  }
+                });
+                location.href = '/admin/jobs/' + list + '/delete_all/';
+              }
+            });
+
+            // select all rows
+            $( "#check-all" ).click(function() {
+              state =  $(this).prop("checked");
+              $('.check').each(function() {
+                $(this).prop( "checked", state )
+              })
+            });
+        })
+    </script>
+
+{% endblock %}

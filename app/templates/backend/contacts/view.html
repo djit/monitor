@@ -1,0 +1,56 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+<h1>
+    <strong>{{ contact.fullname }}</strong>
+    <a class="button button u-pull-right" href="/admin/contacts/">Back</a>
+</h1>
+
+<h1>{{ contact.firstname ~ ' ' ~ contact.lastname }}</h1>
+<div class="row">
+    <div class="six columns">
+        Organization: {{ contact.organization }}
+        <br> Position: {{ contact.position }}
+        <br> Email: {{ contact.email }}
+        <br> Mobile: {{ contact.mobile }}
+        <br> Phone: {{ contact.landline }}
+    </div>
+
+    <div class="six columns text-right">
+        {% if contact.preferences %}
+        Preferences:
+        <ul>
+            <li>Email notification: {{ contact.preferences.articles_notify if contact.preferences.articles_notify }}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+    
+
+<div class="row">
+{% if articles.count() %}
+  <h2>Articles {{ articles.count() }}
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th><input type="checkbox" name="rows" id="check-all"/></th>
+                <th>Source</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Published</th>
+                <th><i class="fa fa-lg fa-trash delete-all" aria-hidden="true" title="delete all selected"></i></th>
+            </tr>
+        </thead>
+        <tbody id="articles-list">
+          <!-- include articles list partial -->
+          {% include 'backend/articles/list.html' %}
+        </tbody>
+    </table>
+{% endif %}
+</div>
+
+<script type="text/javascript">
+  $(function() {
+
+  })
+</script>
+{% endblock %}

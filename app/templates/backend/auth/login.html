@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Monitor | Admin</title>
+    <meta name="description" content="">
+    <meta name="author" content="Djilali Tabbouche">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+    <!--Import Google Icon Font-->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/skeleton.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/backend/layout.css') }}">
+
+    <!--JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-rc1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/font-awesome.js') }}"></script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }} </li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <form action="" method="post" name="account">
+            <div class="row">
+                {{ form.hidden_tag() }}
+                <div class="six columns">
+                    <label for="loginUsernameInput">Username</label>
+                    {{ form.username(class_="u-full-width") }}
+                    {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="six columns">
+                    <label for="loginPasswordInput">Password</label>
+                    {{ form.password(class_="u-full-width") }}
+                    {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    <input class="button-primary u-pull-right" type="submit" value="Login">
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

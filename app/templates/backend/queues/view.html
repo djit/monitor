@@ -1,0 +1,12 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+    <h1>
+        Source: {{ source.name }}
+        <a class="button button u-pull-right" href="/admin/sources/">Back</a>
+    </h1>
+
+    <p>
+        Name: {{ source.name }}<br>
+        Url: {{ source.url|urlize(target='_blank') }}
+    </p>
+{% endblock %}

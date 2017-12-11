@@ -1,0 +1,39 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+<h1>
+    {{ title }}
+    <a class="button u-pull-right" href="/admin/crawlers">Cancel</a>
+</h1>
+
+<form action="" method="post" name="source">
+    <div class="row">
+        <div class="six columns">
+            {{ form.hidden_tag() }}
+            <label for="crawlerNameInput">Crawler name</label>
+            {{ form.name(class_="u-full-width") }}
+            <br>{% for error in form.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <label for="crawlerStatusInput">Active</label>
+            {{ form.status(class_="") }}
+        </div>
+        <div class="six columns">
+            <label for="crawlerTypeInput">Crawler type</label>
+            {{ form.type(class_="u-full-width") }}
+            <br>{% for error in form.type.errors %}
+            <span style="color: red;">[{{ error }}]</span> {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="twelve columns">
+            <label for="crawlerSpiderInput">Spider name</label>
+            {{ form.spider(class_="u-full-width", placeholder="spider name") }}
+            <br>{% for error in form.spider.errors %}
+            <span style="color: red;">[{{ error }}]</span> {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <input class="button-primary u-pull-right" type="submit" value="Save">
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+    <h1>queues: {{ queues.count() }}</h1>
+
+     {% if queues.count() %}
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Article</th>
+                <th>Frequency</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for queue in queues %}
+            <tr>
+                <td><a href="/admin/queues/{{ queue._id }}">{{ queue.email }}</a></td>
+                <td><a href="/admin/queues/{{ queue._id }}">{{ queue.article_id }}</a></td>
+                <td><a href="/admin/queues/{{ queue._id }}">{{ queue.frequency }}</a></td>
+                <td>
+                    <i onClick="window.location='/admin/queues/{{ queue._id }}/edit'" class="fa fa-pencil" aria-hidden="true" title="edit"></i>&nbsp;
+                    <i id="{{ queue._id }}" class="fa fa-lg fa-trash delete" aria-hidden="true" title="delete"></i>&nbsp;
+                </td>
+            </tr>
+            <tr id="result_tr_{{ queue._id }}" style="display:none; background-color: #f2f2f2">
+              <td>&nbsp;</td>
+              <td colspan="3" id="result_td_{{ queue._id }}"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        No queue found.
+    {% endif %}
+
+    <script type="text/javascript">
+        $(function() {
+            // delete queue
+            $( ".delete" ).click(function() {
+                if (confirm('Delete this queue?')){
+                    var id = $(this).attr('id');
+                    location.href = '/admin/queues/' + id + '/delete/';
+                }
+            })
+        })
+    </script>
+
+{% endblock %}

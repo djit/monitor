@@ -1,0 +1,84 @@
+h1 {
+    font-size: 2.0rem
+}
+h2 {
+    font-size: 1.8rem
+}
+nav {
+    padding: 10px 0;
+    margin: 10px 0;
+}
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+nav ul li {
+    margin-right: 30px;
+    display: inline;
+    font-weight: bold;
+}
+nav ul li a {
+    text-decoration: none;
+}
+
+nav ul li a.active {
+    padding-bottom: 5px;
+    border-bottom: solid 3px;
+}
+
+table {
+  font-size: 12px;
+}
+.label{
+  display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}
+.label-info{
+  background-color: #5bc0de;
+}
+.label-success{
+  background-color: #5cb85c;
+}
+.label-default{
+  background-color: #818a91;
+}
+.label-danger{
+  background-color: #d9534f;
+}
+.display{
+  font-size: 13px;
+}
+
+.button-success{
+    background-color: #5cb85c;
+    color: #fff;
+}
+.column, .columns{
+    margin-bottom: 1.5rem;
+}
+
+
+.pagination ul li{
+  display: inline;
+  padding: 8px 16px;
+  border: solid 1px #E1E1E1;
+}
+
+.pagination ul li.active{
+  background-color: #f8f8f8;
+}
+
+.pagination ul li a{
+  text-decoration: none;
+  color: #1EAEDB;
+}

@@ -1,0 +1,20 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+    <h1>
+        Configuration
+        <a class="button button-primary u-pull-right" href="/admin/config/new">New config</a>
+    </h1>
+
+     {% if config %}
+
+    {% else %}
+        No configuration found.
+    {% endif %}
+
+    <script type="text/javascript">
+        $(function() {
+
+        })
+    </script>
+
+{% endblock %}

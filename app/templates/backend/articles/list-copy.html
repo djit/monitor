@@ -1,0 +1,44 @@
+{% for article in articles %}
+{% set filter = request.args.get('status') %}
+{% if filter == 'today' and article.pub_date.date() == today %}
+<tr>
+    <td><input type="checkbox" name="row" id="{{ article._id }}" class="check"/></td>
+    <td>{{ article.source }}</td>
+    <td><a href="/admin/articles/{{ article._id }}">{{ article.title }}</a></td>
+    <td nowrap>
+      {% set color = 'success' if article.status == 'processed' else 'default' if article.status == 'archived' else 'info' %}
+      {% if yesterday and today %}
+      {% set pubtoday = True if article.pub_date.date() == today %}
+      {% endif %}
+      <b class="label label-{{ color }}">{{ article.status }}</b>
+      {% if article.pub_date.date() == today %}
+      <b class="label label-danger">today</b>
+      {% endif %}
+    </td>
+    <td nowrap><a href="/admin/articles/{{ article._id }}">{{ article.pub_date.strftime('%Y-%m-%d') }}</a></td>
+    <td>
+        <i id="{{ article._id }}" class="fa fa-lg fa-trash delete" aria-hidden="true" title="delete"></i>
+    </td>
+</tr>
+{% elif filter != 'today'%}
+<tr>
+    <td><input type="checkbox" name="row" id="{{ article._id }}" class="check"/></td>
+    <td>{{ article.source }}</td>
+    <td><a href="/admin/articles/{{ article._id }}">{{ article.title }}</a></td>
+    <td nowrap>
+      {% set color = 'success' if article.status == 'processed' else 'default' if article.status == 'archived' else 'info' %}
+      {% if yesterday and today %}
+      {% set pubtoday = True if article.pub_date.date() == today %}
+      {% endif %}
+      <b class="label label-{{ color }}">{{ article.status }}</b>
+      {% if article.pub_date.date() == today %}
+      <b class="label label-danger">today</b>
+      {% endif %}
+    </td>
+    <td nowrap><a href="/admin/articles/{{ article._id }}">{{ article.pub_date.strftime('%Y-%m-%d') }}</a></td>
+    <td>
+        <i id="{{ article._id }}" class="fa fa-lg fa-trash delete" aria-hidden="true" title="delete"></i>
+    </td>
+</tr>
+{% endif %}
+{% endfor %}

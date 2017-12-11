@@ -1,0 +1,159 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+
+<div class="row">
+  <h1 class="ten columns">{{ article.title }}</h1>
+  <a class="button button u-pull-right two columns" href="/admin/articles/">Back</a>
+</div>
+
+<div class="row">
+  <div class="eight columns">
+    <span class="link">url: {{ article.url|urlize(target='_blank')  }}</span>
+    <br><span class="address">published: {{ article.pub_date }}</span>
+  </div>
+  <div class="four columns">
+    <!--span class="u-pull-right">status: <b class="label label-info">{{ article.status }}</b></span>
+    <br-->
+    <span class="u-pull-right">
+      status:
+      <select name="status_select">
+        <option value="new" {{ "selected" if  article.status == "new" }}>new</option>
+        <option value="processed" {{ "selected" if  article.status == "processed" }}>processed</option>
+        <option value="archived" {{ "selected" if  article.status == "archived" }}>archived</option>
+      </select>
+    </span>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div style="text-align: justify">{{ article.body|nl2br }}</div>
+</div>
+
+<hr>
+<div class="row">
+  <h2>Add new contact</h2>
+  <div class=msg></div>
+  <form action="#" name="newcontact" id="newcontact">
+      <div class="row">
+          <div class="six columns">
+              {{ form.firstname(class_="u-full-width", placeholder="Firstname", tabindex="1") }}
+              {% for error in form.firstname.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+              <br>
+              {{ form.email(class_="u-full-width", placeholder="Email", tabindex="3") }}
+              <br>
+              {{ form.mobile(class_="u-full-width", placeholder="Mobile phone", tabindex="5") }}
+              <br>
+              {{ form.landline(class_="u-full-width", placeholder="Fixed phone", tabindex="7") }}
+          </div>
+          <div class="six columns">
+              {{ form.lastname(class_="u-full-width", placeholder="Lastname", tabindex="2") }}
+              <br>
+              {{ form.organization(class_="u-full-width", placeholder="Organization", tabindex="4") }}
+              <br>
+              {{ form.position(class_="u-full-width", placeholder="Position", tabindex="6") }}
+              <button id="newcontactsave" class="fa fa-plus button-primary u-pull-left" type="submit" tabindex="8">Add contact</button>
+              <button id="newcontactnotify" class="fa fa-send button-success u-pull-right" tabindex="9">Add & notify</button>
+              <input type="hidden" name="article_id" value="{{ article._id }}" />
+          </div>
+      </div>
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  $(function() {
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    // create new contact
+    $("form[name='newcontact']").submit(function(e) {
+      e.preventDefault();
+      var form = $('form[name="newcontact"]');
+      $.ajax({
+          url: '/admin/contacts/new/',
+          type: 'post',
+          data: form.serialize(),
+          beforeSend: function() {
+            $('#newcontactsave').html('Saving...');
+            $('#newcontactsave').prop('disabled', true);
+          },
+          success: function(data) {
+            $('#newcontactsave').html('Add contact');
+            $('#newcontactsave').prop('disabled', false);
+            if (data.status == 1) {
+              console.log(data.msg)
+              $('.msg').html(data.msg);
+              form[0].reset()
+            }
+            else {
+              console.log(data.msg)
+              ('.msg').html(data.msg);
+            }
+          },
+          complete: function(data) {
+            $('#newcontactsave').html('Add contact');
+            $('#newcontactsave').prop('disabled', false);
+          }
+      });
+    })
+
+    $("form[name='newcontact']").submit(function(e) {
+      e.preventDefault();
+    });
+
+    // create new contact and notify
+    $('#newcontactnotify').click(function() {
+      if (confirm('Do you really want to create AND notify this contact?')) {
+        var form = $('form[name="newcontact"]');
+        $.ajax({
+            url: $SCRIPT_ROOT + '/admin/contacts/createandnotify/',
+            type: 'post',
+            data: form.serialize(),
+            beforeSend: function() {
+              $('#newcontactnotify').html('Sending...');
+              $('#newcontactnotify').prop('disabled', true);
+            },
+            success: function(data) {
+              $('#newcontactnotify').html('Add & notify');
+              $('#newcontactnotify').prop('disabled', false);
+              if (data.status == 1) {
+                console.log(data.msg)
+                $('.msg').html(data.msg);
+                form[0].reset()
+              }
+              else {
+                console.log(data.msg)
+                ('.msg').html(data.msg);
+              }
+            },
+            complete: function(data) {
+              $('#newcontactnotify').html('Add & notify');
+              $('#newcontactnotify').prop('disabled', false);
+            }
+        });
+      }
+      else {
+        return false;
+      }
+    })
+
+    // update  & save article status
+    $("select[name='status_select']").change(function() {
+      var status = $(this).val();
+      $.ajax({
+        url: '/admin/articles/{{ article._id }}/',
+        type: 'PATCH',
+        data: JSON.stringify({'status': status}),
+        contentType : 'application/json',
+        processData: false,
+        dataType: 'json',
+        success: function(data) {
+          console.log('new status: ' + data)
+        }
+      })
+    })
+  })
+</script>
+{% endblock %}

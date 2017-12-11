@@ -1,0 +1,9 @@
+{# generate main nav links for backend pages with contextual active page #}
+{% macro backend_nav_link(endpoint, name) %}
+{# {% if request.endpoint.endswith(endpoint) %} #}
+{% if endpoint in request.url %}
+  <li class="navbar-item"><a href="{{ url_for(endpoint) }}" class="navbar-link active">{{name}}</a></li>
+{% else %}
+  <li><a href="{{ url_for(endpoint) }}" class="navbar-link">{{name}}</a></li>
+{% endif %}
+{% endmacro %}

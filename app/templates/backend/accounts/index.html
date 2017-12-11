@@ -1,0 +1,56 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+    <h1>
+        accounts: {{ accounts.count() }}
+        <a class="button button-primary u-pull-right" href="/admin/accounts/new">New account</a>
+    </h1>
+
+     {% if accounts.count() %}
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Url</th>
+                <th>Active crawler</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in accounts %}
+            <tr>
+                <td><a href="/admin/accounts/{{ account._id }}">{{ account.name }}</a></td>
+                <td><a href="/admin/accounts/{{ account._id }}">{{ account.url|urlize(target='_blank') }}</a></td>
+                <td>
+                  {% set accountcrawler = crawler(account.crawler) if account.crawler %}
+                  {{ accountcrawler.name ~ ' / ' ~ accountcrawler.spider if accountcrawler }}
+                </td>
+                <td>
+                    <i onClick="window.location='/admin/accounts/{{ account._id }}/edit'" class="fa fa-pencil" aria-hidden="true" title="edit"></i>&nbsp;
+                    <i id="{{ account._id }}" class="fa fa-lg fa-trash delete" aria-hidden="true" title="delete"></i>&nbsp;
+                    <i id="{{ account._id }}" class="fa fa-lg fa-cog crawl" aria-hidden="true" title="crawl"></i>
+                </td>
+            </tr>
+            <tr id="result_tr_{{ account._id }}" style="display:none; background-color: #f2f2f2">
+              <td>&nbsp;</td>
+              <td colspan="3" id="result_td_{{ account._id }}"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        No account found: add your first one.
+    {% endif %}
+
+    <script type="text/javascript">
+        $(function() {
+            // delete account
+            $( ".delete" ).click(function() {
+                if (confirm('Delete this account?')){
+                    var id = $(this).attr('id');
+                    location.href = '/admin/accounts/' + id + '/delete/';
+                }
+            })
+        })
+    </script>
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "backend/layout.html" %} {% block content %}
+<h1>
+        Contacts <span id="count">{{ count if count }}</span>
+        <a class="button button-primary u-pull-right" href="/admin/contacts/new">New contact</a>
+    </h1>
+
+<div class="row">
+    <input id="search" type="text" class="u-full-width" placeholder="search contacts by name, email or company" data-list=".list" autofocus />
+</div>
+
+<div class="row">
+    <span class="display">
+        display: <a href="/admin/contacts">all</a>  |
+        <a href="?notification=default">default</a>  |
+        <a href="?notification=daily">daily</a>  |
+        <a href="?notification=weekly">weekly</a>  |
+        <a href="?notification=unsubscribed">unsubscribed</a>
+      </span>
+</div>
+
+<div class="row">
+    {% if contacts.count() %}
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" name="rows" id="check-all" />
+                </th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Organization</th>
+                <th>Articles</th>
+                <th>Notification</th>
+                <th><i class="fa fa-lg fa-trash delete-all" aria-hidden="true" title="delete all selected"></i>&nbsp;&nbsp;
+                    <a href="/admin/contacts/export/csv" class="fa fa-lg fa-file-excel-o export-csv" aria-hidden="true" title="export to csv"></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="contacts-list">
+            <!-- include contacts list partial -->
+            {% include 'backend/contacts/list.html' %}
+        </tbody>
+    </table>
+    {% else %} No contacts found. {% endif %}
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        // delete oject
+        $(".delete").click(function() {
+            if (confirm('Delete this contact?')) {
+                var id = $(this).attr('id');
+                location.href = '/admin/contacts/' + id + '/delete/';
+            }
+        });
+
+        // delete all selected rows
+        $(".delete-all").click(function() {
+            if (confirm('Delete all selected articles?')) {
+                var list = '';
+                $('.check').each(function() {
+                    if ($(this).prop("checked") == true) {
+                        list += $(this).attr('id') + '$'
+                    }
+                });
+                location.href = '/admin/contacts/' + list + '/delete_all/';
+            }
+        });
+
+        // select all rows
+        $("#check-all").click(function() {
+            state = $(this).prop("checked");
+            $('.check').each(function() {
+                $(this).prop("checked", state)
+            })
+        });
+
+        // live search
+        $('#search').keyup(function(query) {
+            var q = this.value;
+            if (q.length > 0) {
+                $.ajax({
+                    url: '/admin/contacts/search/' + q,
+                    type: 'get',
+                    success: function(data) {
+                        //console.log(data)
+                        $('#contacts-list').html(data.data)
+                        $('#count').html(data.count)
+                    }
+                })
+            }
+        });
+    })
+</script>
+
+{% endblock %}

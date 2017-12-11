@@ -1,0 +1,26 @@
+{% extends "backend/layout.html" %} {% block content %}
+<h1>
+    Crawler: {{ crawler.name }}
+    <a class="button button u-pull-right" href="/crawlers/">Back</a>
+</h1>
+
+<p>
+    Name: {{ crawler.name }}
+    <br> Type: {{ crawler.type }}
+    <br> Command: {{ crawler.cmd }}&nbsp;
+    <button class="fa fa-gear fa-1x" id="runCmd">run</button>
+    <hr>
+    <div class="msg"></div>
+</p>
+
+<script type="text/javascript">
+  $(function() {
+    $('#runCmd').click(function() {
+      console.log('run cmd');
+      $.get('/crawlers/{{ crawler._id }}/run', function(data) {
+          $('.msg').html(data);
+      });
+    })
+  })
+</script>
+{% endblock %}

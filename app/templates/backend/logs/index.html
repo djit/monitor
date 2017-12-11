@@ -1,0 +1,70 @@
+{% extends "backend/layout.html" %}
+{% block content %}
+    <h1>
+        Logs {{ logs.count() if logs.count() }}
+    </h1>
+
+    {% if logs.count() %}
+    {{ pagination.links }}
+        <table class="u-full-width">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" name="rows" id="check-all"/></th>
+                    <th>Timestamp</th>
+                    <th>Message</th>
+                    <th><i class="fa fa-lg fa-trash delete-all" aria-hidden="true" title="delete all selected"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td><input type="checkbox" name="row" id="{{ log._id }}" class="check"/></td>
+                    <td><a href="/logs/{{ log._id }}">{{ log.timestamp.strftime('%Y-%m-%d %-H:%M') }}</a></td>
+                    <td>{% for msg in log.msg %}{{ msg }}<br>{% endfor %}</td>
+                    <td>
+                        <i id="{{ log._id }}" class="fa fa-lg fa-trash delete" aria-hidden="true" title="delete"></i>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ pagination.links }}
+    {% else %}
+        No logs found.
+    {% endif %}
+
+    <script type="text/javascript">
+        $(function() {
+            // delete oject
+            $( ".delete" ).click(function() {
+                if (confirm('Delete this log entry?')){
+                    var id = $(this).attr('id');
+                    location.href = '/admin/logs/' + id + '/delete/';
+                }
+            });
+
+            // delete all selected rows
+            $( ".delete-all" ).click(function() {
+              if (confirm('Delete all selected log entries?')){
+                var list = '';
+                $('.check').each(function() {
+                  if ($(this).prop("checked") == true) {
+                    list += $(this).attr('id') + '$'
+                  }
+                });
+                location.href = '/admin/logs/' + list + '/delete_all/';
+              }
+            });
+
+            // select all rows
+            $( "#check-all" ).click(function() {
+              state =  $(this).prop("checked");
+              $('.check').each(function() {
+                $(this).prop( "checked", state )
+              })
+            });
+
+        })
+    </script>
+
+{% endblock %}
