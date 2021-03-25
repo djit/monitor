@@ -36,7 +36,7 @@ pymongo==3.2.2
 pyOpenSSL==16.0.0
 PyPDF2==1.26.0
 python-mimeparse==1.5.2
-PyYAML==3.11
+PyYAML==5.4
 queuelib==1.4.2
 reportlab==3.3.0
 Scrapy==1.1.0
