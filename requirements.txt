@@ -22,7 +22,7 @@ lxml==3.6.0
 MarkupSafe==0.23
 mimerender==0.6.0
 mongokit==0.9.1.1
-paramiko==2.0.0
+paramiko==2.10.1
 parsedatetime==2.1
 parsel==1.0.2
 Pillow==3.2.0
