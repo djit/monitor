@@ -18,7 +18,7 @@ idna==2.1
 ipaddress==1.0.16
 itsdangerous==0.24
 Jinja2==2.8
-lxml==3.6.0
+lxml==4.9.1
 MarkupSafe==0.23
 mimerender==0.6.0
 mongokit==0.9.1.1
