@@ -45,7 +45,7 @@ six==1.10.0
 Twisted==16.2.0
 virtualenv==15.0.1
 w3lib==1.14.2
-Werkzeug==0.11.10
+Werkzeug==0.15.5
 WTForms==2.1
 xhtml2pdf==0.0.6
 zope.interface==4.1.3
